@@ -1,0 +1,566 @@
+{
+  "name": "New lead",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "contact us",
+        "formDescription": "select your course",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "first name"
+            },
+            {
+              "fieldLabel": "last name"
+            },
+            {
+              "fieldLabel": "course",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "html & css"
+                  },
+                  {
+                    "option": "backend"
+                  },
+                  {
+                    "option": "ai&ml"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Reason for selecting course",
+              "fieldType": "textarea"
+            },
+            {
+              "fieldLabel": "gmail acc",
+              "fieldType": "email"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        0,
+        80
+      ],
+      "id": "04dcacbf-1981-4d91-bd8d-bf7c6c8fb1d5",
+      "name": "On form submission",
+      "webhookId": "e7ec5f49-0be1-4353-a7c7-3d6afeb5c96a"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1tSwEux-m3mS_pV4m2-CWhkEcg_Zk1HK_2SXKCdhGG18",
+          "mode": "list",
+          "cachedResultName": "Course n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1tSwEux-m3mS_pV4m2-CWhkEcg_Zk1HK_2SXKCdhGG18/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1tSwEux-m3mS_pV4m2-CWhkEcg_Zk1HK_2SXKCdhGG18/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "first name": "={{ $json['first name'] }}",
+            "last name": "={{ $json['last name'] }}",
+            "course": "={{ $json.course }}",
+            "reason": "={{ $json['Reason for selecting course'] }}",
+            "gmail acc": "={{ $json['gmail acc'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "first name",
+              "displayName": "first name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "last name",
+              "displayName": "last name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "course",
+              "displayName": "course",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reason",
+              "displayName": "reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "gmail acc",
+              "displayName": "gmail acc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        80
+      ],
+      "id": "d02251cd-857a-4bce-9d59-9da461b8223b",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "tSGDlO00KmBIxeGE",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "projectbased31@gmail.com",
+        "subject": "New Registeration",
+        "emailType": "text",
+        "message": "=New Registeration\nfirst name:{{ $json['first name'] }}\nlast name:{{ $json['last name'] }}\ncourse:{{ $json.course }}\nreason:{{ $json.reason }}\ngmail acc:{{ $json['gmail acc'] }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        80
+      ],
+      "id": "24dbde1e-2797-4fd2-868e-7e3b4d180100",
+      "name": "Send a message",
+      "webhookId": "44c945be-d96c-4e12-a026-1179c69ffff0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2KALSriCWFThyzyz",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Append row in sheet').item.json.course }}",
+                    "rightValue": "ai&ml",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "ed601835-0717-4781-bb8f-be834fda6192"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "91b3cb66-0d5b-4ff6-8efc-d88a563a7589",
+                    "leftValue": "={{ $('Append row in sheet').item.json.course }}",
+                    "rightValue": "html & css",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "41faf5bd-aed5-427c-8478-55974feda183",
+                    "leftValue": "={{ $('Append row in sheet').item.json.course }}",
+                    "rightValue": "backend",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        64
+      ],
+      "id": "f12c386a-3a46-4f1c-a72f-a78da6ec32da",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Append row in sheet').item.json['gmail acc'] }}",
+        "subject": "thanks for submitting the form",
+        "emailType": "text",
+        "message": "stay updated for our new courses",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        -112
+      ],
+      "id": "fbd06ad2-1469-4d2e-8306-bd5cf4a100a4",
+      "name": "Send a message1",
+      "webhookId": "3c9f619b-088a-4ce1-8755-dfa76e10cb22",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2KALSriCWFThyzyz",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').item.json['gmail acc'] }}",
+        "subject": "message from coursera",
+        "emailType": "text",
+        "message": "=thanks for submitting the form\nstay tuned for the new courses",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        80
+      ],
+      "id": "8009d99d-b189-4e45-8916-b72a405da07a",
+      "name": "Send a message2",
+      "webhookId": "f4a00295-961e-471b-823a-b84866305bb4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2KALSriCWFThyzyz",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').item.json['gmail acc'] }}",
+        "subject": "new message from coursera",
+        "message": "thanks for submitting the form, stay tuned for our new courses",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        272
+      ],
+      "id": "b9d75bdd-d036-4bf3-9432-377f74d0c13c",
+      "name": "Send a message3",
+      "webhookId": "20e92ce6-91e9-4a74-916c-bdfb7356d6f0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2KALSriCWFThyzyz",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1tSwEux-m3mS_pV4m2-CWhkEcg_Zk1HK_2SXKCdhGG18",
+          "mode": "list",
+          "cachedResultName": "Course n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1tSwEux-m3mS_pV4m2-CWhkEcg_Zk1HK_2SXKCdhGG18/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/11d_njZuz_ZdcjqT1WE7XVAX9Eg6cwZKdKVuQ_J9Es8Q/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "first name": "={{ $('On form submission').item.json['first name'] }}",
+            "last name": "={{ $('On form submission').item.json['last name'] }}",
+            "course": "={{ $('On form submission').item.json.course }}",
+            "reason": "={{ $('On form submission').item.json['Reason for selecting course'] }}",
+            "gmail acc": "={{ $('On form submission').item.json['gmail acc'] }}",
+            "row_number": 0
+          },
+          "matchingColumns": [
+            "gmail acc"
+          ],
+          "schema": [
+            {
+              "id": "first name",
+              "displayName": "first name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "last name",
+              "displayName": "last name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "course",
+              "displayName": "course",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reason",
+              "displayName": "reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "gmail acc",
+              "displayName": "gmail acc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1120,
+        80
+      ],
+      "id": "d73d0507-f058-4e53-8983-f09cebacf946",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "tSGDlO00KmBIxeGE",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "On form submission": [
+      {
+        "json": {
+          "first name": "mohit",
+          "last name": "dogga",
+          "course": "html & css",
+          "Reason for selecting course": "i like html&css",
+          "gmail acc": "mohitdogga31@gmail.com",
+          "submittedAt": "2026-05-28T15:07:23.188-04:00",
+          "formMode": "test"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message3": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message2": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "c2995c4f-5291-4121-bd4b-0cc61524ebb2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "24664926539d9915bc2d8860a47745f08713c1dc9b1016549615bf9cd17833dd"
+  },
+  "id": "CCiXo33IvA9XYFnV",
+  "tags": []
+}
